@@ -1,0 +1,27 @@
+services:
+  web:  # Aplicación
+    image: php:8-apache
+    build: .
+    volumes:
+      - /home/vagrant/codi:/var/www/html
+    expose:
+      - "80"  # Puerto expuesto dentro de la red de Docker
+    networks:
+      - xPj9f5a13
+
+  sDc:  # Distribuidor de carga (Nginx)
+    image: nginx:latest
+    container_name: cNginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Configuración personalizada de Nginx
+    depends_on:
+      - web  # Depende del servicio sLlauna
+    ports:
+      - "80:80"  # Exponer el puerto 80 del host al puerto 80 del contenedor Nginx
+    networks:
+      - xPj9f5a13
+
+networks:
+  xPj9f5a13:
+    name: pj9f5a13
+    driver: bridge
